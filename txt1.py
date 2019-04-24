@@ -50,14 +50,14 @@ class TXT1:
         self, 
         file: io.BufferedWriter, 
         string: str, 
-        encoding: str= 'utf-8'
+        encoding: str= 'utf_8'
     ):
 
         # Write the header ID as an identifier.
-        file.write( bytes(self._hdr_id, 'utf-8') )
+        file.write( bytes(self._hdr_id, 'utf_8') )
 
         # Write the encoding of the file to parse.
-        file.write( bytes(chr(self._enc_dit), 'utf-8') )
+        file.write( bytes(chr(self._enc_dict[encoding]), 'utf_8') )
 
         # Encode the string in specified encoding.
         # Write the data as bytes. In the file.
@@ -69,13 +69,13 @@ class TXT1:
     ):
         # Identify that the file is a TXT1 file.
         # If it's not the process would stop here.
-        assert file.read(4) == bytes(self._hdr_i, 'utf-8')
+        assert file.read(4) == bytes(self._hdr_id, 'utf_8')
 
         # An integer depecting the encoding of text.
         enc_r: int = ord(file.read(1))
 
         # Encoding as string representation/name of the encoding.
-        enc_n: int = None
+        enc_n: str = None
 
         # If it's not a valid encoding format.
         if enc_r == 0 or enc_r > self._max_enc_n:
@@ -88,4 +88,4 @@ class TXT1:
 
         # Reads rest of the file and decodes it.
         # Sends this data as string.
-        return codecs.decode(file.read(), enc_name)
+        return codecs.decode(file.read(), enc_s)
