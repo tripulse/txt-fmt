@@ -22,6 +22,7 @@
 
 import codecs
 import io
+import struct
 
 #  ——————  \  /  ——————
 #    ||     \/     ||    
@@ -43,7 +44,7 @@ class TXT1:
         'utf_32_le':   16,
         'utf_32_be':   18
     }
-    _hdr_id = "TXT1"
+    _hdr_id = b"TXT1"
     _max_enc_n = 18
 
     def encode(
@@ -54,14 +55,14 @@ class TXT1:
     ):
 
         # Write the header ID as an identifier.
-        file.write( bytes(self._hdr_id, 'utf_8') )
+        file.write(self._hdr_id)
 
-        # Write the encoding of the file to parse.
-        file.write( bytes(chr(self._enc_dict[encoding]), 'utf_8') )
+        # Write the encoding of the file as an octet.
+        file.write(struct.pack('b', self._enc_dict[encoding]))
 
         # Encode the string in specified encoding.
         # Write the data as bytes. In the file.
-        file.write( codecs.encode(string, encoding) )
+        file.write(codecs.encode(string, encoding))
 
     def decode(
         self, 
@@ -69,12 +70,12 @@ class TXT1:
     ):
         # Identify that the file is a TXT1 file.
         # If it's not the process would stop here.
-        assert file.read(4) == bytes(self._hdr_id, 'utf_8')
+        assert file.read(4) == self._hdr_id
 
         # An integer depecting the encoding of text.
-        enc_r: int = ord(file.read(1))
+        enc_r: int = struct.unpack('b', file.read(1))
 
-        # Encoding as string representation/name of the encoding.
+        # The file encoding algortihm-name from the dictionary.
         enc_n: str = None
 
         # If it's not a valid encoding format.
