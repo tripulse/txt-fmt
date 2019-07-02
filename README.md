@@ -4,8 +4,6 @@ TXT1 is container to contain text with several encodings (i.e UTF8, UTF16). It's
 Including 7 variants of Unicode.
 
 #### Encodings it supports:
-- ASCII
-- CP037
 - UTF-8
 - UTF-16
 - UTF-32
