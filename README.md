@@ -27,3 +27,9 @@ To avoid this We've designed this container to contain metadata to parse and the
 
 #### Licensing
 MIT License.
+
+
+## ARCHIVED
+The reason for archival is because I recently learned about *UTF-8* which resolves all of these problems by technique called **continiuation bytes**, this method is super effective and takes lesser space (i.e 24-bits = 3bytes). Decoders are able to interpret this. What I was talking about as *UTF-8* is actually *Windows-1252* encoding.
+
+From this short description I gave you, you may understand why this library is bullshit and doesn't make any sense at all (nowadays). The entire idea I had in my mind was entirely baseless.
