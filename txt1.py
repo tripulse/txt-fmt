@@ -23,6 +23,7 @@
 import codecs
 import io
 import struct
+from enum import Enum
 
 #  ——————  \  /  ——————
 #    ||     \/     ||    
@@ -47,46 +48,25 @@ class TXT1:
     _hdr_id = b"TXT1"
     _max_enc_n = 18
 
+    @staticmethod
     def encode(
         self, 
-        file: io.BufferedWriter, 
-        string: str, 
+        file: io.BufferedWriter,
         encoding: str= 'utf_8'
     ):
-
-        # Write the header ID as an identifier.
         file.write(self._hdr_id)
-
-        # Write the encoding of the file as an octet.
         file.write(struct.pack('b', self._enc_dict[encoding]))
-
-        # Encode the string in specified encoding.
-        # Write the data as bytes. In the file.
         file.write(codecs.encode(string, encoding))
-
-    def decode(
-        self, 
-        file: io.BufferedReader
-    ):
-        # Identify that the file is a TXT1 file.
-        # If it's not the process would stop here.
+ 
+    @staticmethod
+    def decode(file: io.BufferedReader):
         assert file.read(4) == self._hdr_id
+        codec_id: int = struct.unpack('b', file.read(1))
+        codec_name: str = None
+ 
+        for name, id in self._enc_dict.items():
+            if coded_id == id: enc_s = name
+                
+        if 
 
-        # An integer depecting the encoding of text.
-        enc_r: int = struct.unpack('b', file.read(1))
-
-        # The file encoding algortihm-name from the dictionary.
-        enc_n: str = None
-
-        # If it's not a valid encoding format.
-        if enc_r == 0 or enc_r > self._max_enc_n:
-            raise ValueError("Not a valid encoding format.")
-
-        # Picks an encoding based on the integer provided.
-        for enc_n, e_id in self._enc_dict.items():
-            if enc_r == e_id:
-                enc_s = enc_n
-
-        # Reads rest of the file and decodes it.
-        # Sends this data as string.
         return codecs.decode(file.read(), enc_s)
