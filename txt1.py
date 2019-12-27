@@ -67,6 +67,6 @@ class TXT1:
         for name, id in self._enc_dict.items():
             if coded_id == id: enc_s = name
                 
-        if 
-
+        if codec_name == None:
+            raise Exception("Codec is undefined, cannot decode the file")
         return codecs.decode(file.read(), enc_s)
